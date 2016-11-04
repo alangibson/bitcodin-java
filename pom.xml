@@ -43,7 +43,18 @@
       <artifactId>gson</artifactId>
       <version>2.3.1</version>
       <scope>compile</scope>
-    </dependency>
+      </dependency>
+<!--     <dependency> -->
+<!--       <groupId>io.reactivex</groupId> -->
+<!-- 	  <artifactId>rxjava</artifactId> -->
+<!-- 	  <version>1.2.1</version> -->
+<!-- 	</dependency> -->
+	<dependency>
+	  <groupId>org.mockito</groupId>
+	  <artifactId>mockito-core</artifactId>
+	  <version>2.2.9</version>
+	  <scope>test</scope>
+	</dependency>
   </dependencies>
 
   <distributionManagement>
@@ -65,8 +76,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.1</version>
         <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
+          <source>1.8</source>
+          <target>1.8</target>
         </configuration>
       </plugin>
 

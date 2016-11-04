@@ -2,6 +2,8 @@ package com.bitmovin.bitcodin.api.job;
 
 import java.util.Vector;
 
+import com.bitmovin.bitcodin.api.input.HTTPInputConfig;
+import com.bitmovin.bitcodin.api.media.EncodingProfileConfig;
 import com.google.gson.annotations.Expose;
 
 
@@ -30,4 +32,8 @@ public class JobConfig {
     public HlsEncryptionConfig hlsEncryptionConfig;
     @Expose
     public MergeAudioChannelConfig[] mergeAudioChannelConfigs;
+    
+    // Used by JobConfigBuilder
+    public EncodingProfileConfig encodingProfileConfig;
+    public HTTPInputConfig httpInputConfig;
 }

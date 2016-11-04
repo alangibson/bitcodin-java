@@ -121,3 +121,60 @@ public class TranscodeSintelToDASHAndHLS {
 }
 ```
 
+You may also use the fluent builder API along with asynchronous job processing. 
+```java
+public class TranscodeSintelToDASHAndHLS {
+
+    public static void main(String[] args) throws InterruptedException {
+        
+        // Initialize Bitcodin API and job executor
+        
+        // Create BitcodinApi
+        String apiKey = "YOUR_API_KEY";
+        BitcodinApi bitApi = new BitcodinApi(apiKey);
+        
+        // Create executor to asynchronously execute jobs
+        JobExecutor executor = new JobExecutor(bitApi, 5);
+        
+        // Create and submit job(s) for processing.
+        
+		 JobConfig jobConfig = new JobConfigBuilder()
+            .addManifestType(ManifestType.MPEG_DASH_MPD)
+		     .addManifestType(ManifestType.HLS_M3U8)
+		     .createHTTPInputConfigBuilder()
+                .withURL("http://ftp.nluug.nl/pub/graphics/blender/demo/movies/Sintel.2010.720p.mkv")
+                .done()
+			.createEncodingProfileConfigBuilder()
+				.withName("JUnitTestProfile")
+				.addVideoStreamConfigBuilder()
+					.withBitrate(1 * 1024 * 1024)
+					.withWidth(640)
+					.withHeight(480)
+					.withProfile(Profile.MAIN)
+					.withPreset(Preset.PREMIUM)
+					.done()
+				.done()
+			.build();
+
+		executor.submit(jobConfig);
+		
+		// Wait for job(s) to be completed
+		
+		executor.await(
+			// Success handler
+			(jobDetails) -> {
+	           System.out.println("Status: " + jobDetails.status.toString() +
+	              " - Enqueued Duration: " + jobDetails.enqueueDuration + "s" +
+	              " - Realtime Factor: " + jobDetails.realtimeFactor +
+	              " - Encoded Duration: " + jobDetails.encodedDuration + "s" +
+	              " - Output: " + jobDetails.bytesWritten/1024/1024 + "MB");
+			},
+			// Failure handler
+			(e) -> {
+				System.out.println("Could not get any job details");
+				System.out.println(e);
+			}
+		);
+	}
+}
+```
